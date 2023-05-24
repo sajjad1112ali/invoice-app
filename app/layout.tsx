@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import AuthStatus from "@/components/auth-status";
 import { Suspense } from "react";
+import NavBar from "@/components/NavBar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,12 +35,13 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://preline.co/assets/vendor/preline/preline.js"></script>
+      </head>
       <body className={inter.variable}>
         <Toaster />
-        <Suspense fallback="Loading...">
-          {/* @ts-expect-error Async Server Component */}
-          <AuthStatus />
-        </Suspense>
+        <NavBar />
+       
         {children}
       </body>
     </html>
