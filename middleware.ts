@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(req: NextRequest) {
-  // Get the pathname of the request (e.g. /, /dashboard)
+  const protectedPages = ["/dashboard", "/dashboard/profile", "/dashboard/create-invoice"]
   const path = req.nextUrl.pathname;
 
   // If it's the root path, just render it
@@ -15,7 +15,7 @@ export default async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  if (!session && path === "/dashboard") {
+  if (!session && protectedPages.indexOf(path) != -1) {
     return NextResponse.redirect(new URL("/login", req.url));
   } else if (session && (path === "/login" || path === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
