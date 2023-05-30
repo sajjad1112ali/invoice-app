@@ -7,6 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@prisma/client": "^4.14.0",
     "@types/node": "^18.11.9",
     "@types/pdfmake": "^0.2.2",
