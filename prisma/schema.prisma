@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
- provider = "sqlite"
+ provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,4 +11,14 @@ model User {
   id        Int     @id @default(autoincrement())
   email     String  @unique
   password  String
+  invoices  Invoice[]
+}
+
+model Invoice {
+  id         Int      @id @default(autoincrement())
+  customerName       String
+  items              String @db.Text
+  createdAt          DateTime @default(now())
+  userId             Int
+  user               User     @relation(fields: [userId], references: [id])
 }
