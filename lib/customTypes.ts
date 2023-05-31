@@ -4,3 +4,11 @@ export type InvoiceItem = {
   qty: number;
   [key: string]: any;
 };
+
+export type ClientInfo = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  [key: string]: any;
+
+};

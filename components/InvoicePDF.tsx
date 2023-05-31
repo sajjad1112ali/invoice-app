@@ -3,17 +3,19 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import toast from "react-hot-toast";
 
 import { DocumentDownloadIcon } from "@heroicons/react/outline";
-import { InvoiceItem } from "@/lib/customTypes";
+import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
 
 type privateProps = {
   items: Array<InvoiceItem>;
+  clientInfo: ClientInfo;
+  resetForm: Function;
 };
 // Register the fonts with pdfmake
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const InvoicePDF = ({ items }: privateProps) => {
-  const topMargin = 20;
-  const defaultMargin = { margin: [0, 10, 0, 0] };
+const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
+  let totalPrice = 0;
+  let shippingPrice = 100;
 
   const isValidInput = (inputValue: string | number, name: string) => {
     console.log(inputValue);
@@ -33,12 +35,12 @@ const InvoicePDF = ({ items }: privateProps) => {
       }
     });
   };
-  const generatePDF = () => {
+  const validateAndGetPDFData = () => {
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     if (foundUnsatisfiedItem) {
       toast.error("Validation errors occurred for some items.");
-      return true;
+      return false;
     }
     const documentDefinition = {
       content: [
@@ -60,7 +62,7 @@ const InvoicePDF = ({ items }: privateProps) => {
           columns: [
             {
               width: "*",
-              text: "Mr. Usman Sherazi",
+              text: clientInfo.name,
               style: ["subheader", "fontBold"],
               margin: [0, 30, 0, 0],
             },
@@ -81,8 +83,8 @@ const InvoicePDF = ({ items }: privateProps) => {
             ],
           ],
         },
-        { text: "+903472514178", style: "paragraphs" },
-        { text: "john@yopmail.com", style: "paragraphs" },
+        { text: clientInfo.phoneNumber, style: "paragraphs" },
+        { text: clientInfo.email, style: "paragraphs" },
         { text: "Items", style: "subheader", margin: [0, 20, 0, 5] },
         generateItemsTable(items),
         // {
@@ -104,20 +106,23 @@ const InvoicePDF = ({ items }: privateProps) => {
           fontSize: 14,
         },
       },
-      images: {
-        logoImage: "https://picsum.photos/100/50",
-      },
+      // images: {
+      //   logoImage: "https://picsum.photos/100/50",
+      // },
     };
-
-    // Generate the PDF
-    pdfMake.createPdf(documentDefinition).open();
+    return documentDefinition;
+  };
+  const generatePDF = (pdfData) => {
+    pdfMake.createPdf(pdfData).open();
   };
 
   const generateItemsTable = (items: Array<InvoiceItem>) => {
-    let totalBillingAmount = 0;
+    let totalItemsAmount = 0;
+    
     const tableBody = items.map((item) => {
+
       const sum = item.price * item.qty;
-      totalBillingAmount += sum;
+      totalItemsAmount += sum;
       return [
         { text: item.name, border: [false, false, false, false] },
         {
@@ -165,13 +170,12 @@ const InvoicePDF = ({ items }: privateProps) => {
           body: [tableHeader, ...tableBody],
         },
       },
-      getTotalTable(totalBillingAmount),
+      getTotalTable(totalItemsAmount),
     ];
   };
 
-  const getTotalTable = (billingAmount: number) => {
-    let shippingAmount = 100;
-    let totalBillingAmount = billingAmount + shippingAmount;
+  const getTotalTable = (subTotal: number) => {
+    totalPrice = subTotal + shippingPrice;
     return {
       table: {
         widths: ["*", 120], // Specify the widths of the columns
@@ -184,7 +188,7 @@ const InvoicePDF = ({ items }: privateProps) => {
               alignment: "right",
             },
             {
-              text: billingAmount,
+              text: subTotal,
               border: [false, false, false, false],
               alignment: "right",
             },
@@ -197,7 +201,7 @@ const InvoicePDF = ({ items }: privateProps) => {
               alignment: "right",
             },
             {
-              text: shippingAmount,
+              text: shippingPrice,
               border: [false, false, false, false],
               alignment: "right",
             },
@@ -210,7 +214,7 @@ const InvoicePDF = ({ items }: privateProps) => {
               alignment: "right",
             },
             {
-              text: totalBillingAmount,
+              text: totalPrice,
               border: [false, false, false, false],
               alignment: "right",
             },
@@ -220,6 +224,9 @@ const InvoicePDF = ({ items }: privateProps) => {
     };
   };
   const saveInvoice = () => {
+    const isValid = validateAndGetPDFData();
+    if (isValid === false) return false;
+
     fetch("/api/invoice", {
       method: "POST",
       headers: {
@@ -227,8 +234,10 @@ const InvoicePDF = ({ items }: privateProps) => {
       },
       body: JSON.stringify({
         userId: 1,
-        customerName: "John doe",
-        items: { json: "data of items" },
+        clientInformation: JSON.stringify(clientInfo),
+        totalPrice: `${totalPrice}`,
+        shippingPrice:`${shippingPrice}`,
+        items: JSON.stringify(items),
       }),
     }).then(async (res) => {
       // setLoading(false);
@@ -236,6 +245,8 @@ const InvoicePDF = ({ items }: privateProps) => {
       console.log(data);
       if (res.status === 200) {
         toast.success("Saved...");
+        generatePDF(isValid);
+        resetForm()
       } else {
         const { error } = await res.json();
         toast.error(error);

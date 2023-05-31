@@ -1,11 +1,26 @@
-import { InvoiceItem } from "@/lib/customTypes";
+"use client"
+import { useState } from 'react';
+import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
 import { DateTime } from "luxon";
 
 import Link from "next/link";
+import Modal from './Modal';
 type privateProps = {
   items: Array<InvoiceItem>;
 };
 const InvoiceList = ({ invoicesData }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [invoiceItems, setInvoiceItems] = useState(null);
+
+  const openModal = (items) => {
+    setInvoiceItems(items)
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <div className="sm:px-5">
@@ -34,6 +49,9 @@ const InvoiceList = ({ invoicesData }) => {
                   Total Price
                 </th>
                 <th scope="col" className="px-6 py-3">
+                Shipping Price
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Date
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -49,11 +67,11 @@ const InvoiceList = ({ invoicesData }) => {
             </thead>
             <tbody>
               {invoicesData.map((elem: InvoiceItem, index: number) => {
-                const { id, customerName, createdAt } = elem;
+                const { id, clientInformation, createdAt, items, isPaid, shippingPrice, totalPrice } = elem;
+                const clientData: ClientInfo = JSON.parse(clientInformation);
                 const date = DateTime.fromISO(createdAt);
                 const formattedDate = date.toFormat("LLL dd, yyyy");
 
-                const isPaid = index % 2 === 0;
                 const tblRowClass = isPaid
                   ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                   : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700";
@@ -63,9 +81,10 @@ const InvoiceList = ({ invoicesData }) => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {customerName}
+                      {clientData.name}
                     </th>
-                    <td className="px-6 py-4 ">500</td>
+                    <td className="px-6 py-4 ">{totalPrice}</td>
+                    <td className="px-6 py-4 ">{shippingPrice}</td>
                     <td className="px-6 py-4">{formattedDate}</td>
                     <td className="px-6 py-4">{createdAt}</td>
                     <td className="px-6 py-4">
@@ -78,12 +97,12 @@ const InvoiceList = ({ invoicesData }) => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      <span
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:cursor-pointer"
+                        onClick={() => openModal(items)}
                       >
-                        Edit
-                      </a>
+                        View
+                      </span>
                     </td>
                   </tr>
                 );
@@ -91,6 +110,7 @@ const InvoiceList = ({ invoicesData }) => {
             </tbody>
           </table>
         </div>
+        <Modal isOpen={isOpen} closeModal={closeModal} invoiceItems={invoiceItems}/>
       </div>
     </>
   );

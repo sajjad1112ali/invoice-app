@@ -16,7 +16,7 @@ model User {
 
 model Invoice {
   id                 Int      @id @default(autoincrement())
-  customerName       String
+  clientInformation  String   @db.Text
   items              String   @db.Text
   createdAt          DateTime @default(now())
   userId             Int

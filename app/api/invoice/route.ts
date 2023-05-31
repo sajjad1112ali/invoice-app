@@ -2,11 +2,12 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { userId, customerName, items } = await req.json();
+  const { userId, clientInformation, items, totalPrice, shippingPrice } =
+    await req.json();
   try {
     const user = await prisma.invoice.create({
       data: {
-        userId, customerName, items: JSON.stringify(items),
+        userId, clientInformation, items, totalPrice, shippingPrice
       },
     });
       return NextResponse.json(user);
@@ -18,6 +19,9 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
+    console.log('*****************************************************************')
+    console.log('FETCHING DATA. . . .')
+    console.log('*****************************************************************')
     const invoices = await prisma.invoice.findMany();
       return NextResponse.json(invoices);
   } catch (error) {

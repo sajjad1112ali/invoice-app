@@ -1,17 +1,26 @@
 "use client";
-import { InvoiceItem } from "@/lib/customTypes";
+import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
 import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/outline";
 
 import React, { useState } from "react";
 import InvoicePDF from "@/components/InvoicePDF";
+import { ClientInformation } from "./Invoice/ClientInformation";
 
 function CreateInvoice() {
+  const defaulfItem: InvoiceItem = { name: "", price: 0, qty: 0 }
+  const defaultClientInfo: ClientInfo = {
+    name: "",
+    email: "",
+    phoneNumber: "",
+  }
   const [items, setItems] = useState<InvoiceItem[]>([
-    { name: "", price: 0, qty: 0 },
+    defaulfItem,
   ]);
 
+  const [clientInfo, setClientInfo] = useState<ClientInfo>(defaultClientInfo);
+  
   const addItem = () => {
-    setItems([...items, { name: "", price: 0, qty: 0 }]);
+    setItems([...items, defaulfItem]);
   };
 
   const removeItem = (index: number) => {
@@ -30,10 +39,25 @@ function CreateInvoice() {
     setItems(updatedItems);
   };
 
+  const handleClientInfoChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: string
+  ) => {
+    const { name, value } = event.target;
+    const updatedItems = { ...clientInfo };
+    updatedItems[name] = value;
+    setClientInfo(updatedItems);
+  };
+
+  const resetForm = () => {
+    setItems([defaulfItem]);
+    setClientInfo(defaultClientInfo);
+  };
   return (
     <>
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-4">Create Invoice</h1>
+        <ClientInformation clientInfo={clientInfo} handleClientInfoChange={handleClientInfoChange}/>
         <div className="flex">
           <p className="flex-1 px-4">Product</p>
           <p className="w-20">Price</p>
@@ -81,7 +105,7 @@ function CreateInvoice() {
           >
             <PlusCircleIcon className="h-5 w-5" />
           </button>
-          <InvoicePDF items={items} />
+          <InvoicePDF items={items} clientInfo={clientInfo} resetForm={resetForm}/>
         </div>
       </div>
     </>
