@@ -15,10 +15,13 @@ model User {
 }
 
 model Invoice {
-  id         Int      @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   customerName       String
-  items              String @db.Text
+  items              String   @db.Text
   createdAt          DateTime @default(now())
   userId             Int
   user               User     @relation(fields: [userId], references: [id])
+  totalPrice         String
+  shippingPrice      String
+  isPaid             Boolean  @default(false)
 }
