@@ -7,7 +7,7 @@ import { InvoiceItem } from "@/lib/customTypes";
 
 type privateProps = {
   items: Array<InvoiceItem>;
-}
+};
 // Register the fonts with pdfmake
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -219,10 +219,33 @@ const InvoicePDF = ({ items }: privateProps) => {
       },
     };
   };
+  const saveInvoice = () => {
+    fetch("/api/invoice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: 1,
+        customerName: "John doe",
+        items: { json: "data of items" },
+      }),
+    }).then(async (res) => {
+      // setLoading(false);
+      const data = await res.json();
+      console.log(data);
+      if (res.status === 200) {
+        toast.success("Saved...");
+      } else {
+        const { error } = await res.json();
+        toast.error(error);
+      }
+    });
+  };
 
   return (
     <button
-      onClick={generatePDF}
+      onClick={saveInvoice}
       className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-3 py-2 mx-3 rounded"
     >
       <DocumentDownloadIcon className="h-5 w-5" />
