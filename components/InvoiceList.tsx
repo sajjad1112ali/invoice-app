@@ -6,13 +6,13 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import Modal from './Modal';
 type privateProps = {
-  items: Array<InvoiceItem>;
+  invoicesData: Array<InvoiceItem>;
 };
-const InvoiceList = ({ invoicesData }) => {
+const InvoiceList = ({ invoicesData }: privateProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [invoiceItems, setInvoiceItems] = useState(null);
+  const [invoiceItems, setInvoiceItems] = useState<string>('');
 
-  const openModal = (items) => {
+  const openModal = (items: string) => {
     setInvoiceItems(items)
     setIsOpen(true);
   };
