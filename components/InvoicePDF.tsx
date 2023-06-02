@@ -18,7 +18,6 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
   let shippingPrice = 100;
 
   const isValidInput = (inputValue: string | number, name: string) => {
-    console.log(inputValue);
     if (name === "name") return inputValue !== "";
     return inputValue > 0;
   };
@@ -35,10 +34,15 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
       }
     });
   };
+  const validateCustomerInformation = (obj: ClientInfo) => {
+    return Object.values(obj).some((value) => value === '');
+
+  };
   const validateAndGetPDFData = () => {
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
-    if (foundUnsatisfiedItem) {
+    const isClientInformationValid = validateCustomerInformation(clientInfo);
+    if (foundUnsatisfiedItem || isClientInformationValid) {
       toast.error("Validation errors occurred for some items.");
       return false;
     }
@@ -112,7 +116,9 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
     };
     return documentDefinition;
   };
-  const generatePDF = (pdfData) => {
+  const generatePDF = (pdfData, id: number) => {
+    console.log(pdfData)
+    pdfData.content[2].columns[1][0].stack[0].text = `Invoice No: ${id}`
     pdfMake.createPdf(pdfData).open();
   };
 
@@ -242,10 +248,10 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
     }).then(async (res) => {
       // setLoading(false);
       const data = await res.json();
-      console.log(data);
+      const {id} = data;
       if (res.status === 200) {
         toast.success("Saved...");
-        generatePDF(isValid);
+        generatePDF(isValid, id);
         resetForm()
       } else {
         const { error } = await res.json();

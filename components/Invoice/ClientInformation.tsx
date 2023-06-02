@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 
 import { ClientInfo } from "@/lib/customTypes";
-export const ClientInformation = ({clientInfo, handleClientInfoChange}) => {
+type privateProps = {
+  clientInfo: ClientInfo;
+  handleClientInfoChange: Function;
+};
+export const ClientInformation = ({clientInfo, handleClientInfoChange}: privateProps) => {
 
 
   return (

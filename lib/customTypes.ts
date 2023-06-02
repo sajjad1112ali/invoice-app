@@ -12,3 +12,15 @@ export type ClientInfo = {
   [key: string]: any;
 
 };
+
+
+export type SingleInvoice = {
+  id: number;
+  items: string;
+  shippingPrice: string;
+  totalPrice: string;
+  clientInformation: string;
+  createdAt: string;
+  userId: Function;
+  isPaid:  boolean
+};

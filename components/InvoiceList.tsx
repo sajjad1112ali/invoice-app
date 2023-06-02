@@ -1,18 +1,18 @@
 "use client"
 import { useState } from 'react';
-import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
+import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
 import { DateTime } from "luxon";
 
 import Link from "next/link";
 import Modal from './Modal';
 type privateProps = {
-  invoicesData: Array<InvoiceItem>;
+  invoicesData: Array<SingleInvoice>;
 };
 const InvoiceList = ({ invoicesData }: privateProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [invoiceItems, setInvoiceItems] = useState<string>('');
+  const [invoiceItems, setInvoiceItems] = useState<SingleInvoice>();
 
-  const openModal = (items: string) => {
+  const openModal = (items: SingleInvoice) => {
     setInvoiceItems(items)
     setIsOpen(true);
   };
@@ -66,7 +66,7 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
               </tr>
             </thead>
             <tbody>
-              {invoicesData.map((elem: InvoiceItem, index: number) => {
+              {invoicesData.map((elem: SingleInvoice) => {
                 const { id, clientInformation, createdAt, items, isPaid, shippingPrice, totalPrice } = elem;
                 const clientData: ClientInfo = JSON.parse(clientInformation);
                 const date = DateTime.fromISO(createdAt);
@@ -99,7 +99,7 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                     <td className="px-6 py-4">
                       <span
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:cursor-pointer"
-                        onClick={() => openModal(items)}
+                        onClick={() => openModal(elem)}
                       >
                         View
                       </span>
@@ -110,7 +110,7 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
             </tbody>
           </table>
         </div>
-        <Modal isOpen={isOpen} closeModal={closeModal} invoiceItems={invoiceItems}/>
+        <Modal isOpen={isOpen} closeModal={closeModal} invoiceDetails={invoiceItems}/>
       </div>
     </>
   );

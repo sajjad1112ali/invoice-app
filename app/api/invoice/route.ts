@@ -19,9 +19,6 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    console.log('*****************************************************************')
-    console.log('FETCHING DATA. . . .')
-    console.log('*****************************************************************')
     const invoices = await prisma.invoice.findMany();
       return NextResponse.json(invoices);
   } catch (error) {
