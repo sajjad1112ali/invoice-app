@@ -21,7 +21,7 @@ model Invoice {
   createdAt          DateTime @default(now())
   userId             Int
   user               User     @relation(fields: [userId], references: [id])
-  totalPrice         String
-  shippingPrice      String
+  totalPrice         Int
+  shippingPrice      Int
   isPaid             Boolean  @default(false)
 }

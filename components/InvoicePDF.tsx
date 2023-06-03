@@ -3,17 +3,18 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import toast from "react-hot-toast";
 
 import { DocumentDownloadIcon } from "@heroicons/react/outline";
-import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
+import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
 
 type privateProps = {
   items: Array<InvoiceItem>;
   clientInfo: ClientInfo;
-  resetForm: Function;
+  resetForm?: Function;
+  downloadTriggeredFromModal?: number;
 };
 // Register the fonts with pdfmake
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
+const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }: privateProps) => {
   let totalPrice = 0;
   let shippingPrice = 100;
 
@@ -42,7 +43,7 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     const isClientInformationValid = validateCustomerInformation(clientInfo);
-    if (foundUnsatisfiedItem || isClientInformationValid) {
+    if ((foundUnsatisfiedItem || isClientInformationValid) && !downloadTriggeredFromModal) {
       toast.error("Validation errors occurred for some items.");
       return false;
     }
@@ -117,7 +118,6 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
     return documentDefinition;
   };
   const generatePDF = (pdfData, id: number) => {
-    console.log(pdfData)
     pdfData.content[2].columns[1][0].stack[0].text = `Invoice No: ${id}`
     pdfMake.createPdf(pdfData).open();
   };
@@ -230,9 +230,15 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
     };
   };
   const saveInvoice = () => {
+    console.log(`downloadTriggeredFromModal = ${downloadTriggeredFromModal}`)
     const isValid = validateAndGetPDFData();
+    
     if (isValid === false) return false;
-
+    if (downloadTriggeredFromModal) {
+      generatePDF(isValid, downloadTriggeredFromModal);
+      return;
+    }
+    console.log('GENERATING PDF. . . .')
     fetch("/api/invoice", {
       method: "POST",
       headers: {
@@ -241,8 +247,8 @@ const InvoicePDF = ({ items, clientInfo, resetForm }: privateProps) => {
       body: JSON.stringify({
         userId: 1,
         clientInformation: JSON.stringify(clientInfo),
-        totalPrice: `${totalPrice}`,
-        shippingPrice:`${shippingPrice}`,
+        totalPrice: totalPrice,
+        shippingPrice: shippingPrice,
         items: JSON.stringify(items),
       }),
     }).then(async (res) => {

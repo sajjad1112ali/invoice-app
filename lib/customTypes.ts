@@ -17,10 +17,16 @@ export type ClientInfo = {
 export type SingleInvoice = {
   id: number;
   items: string;
-  shippingPrice: string;
-  totalPrice: string;
+  shippingPrice: number;
+  totalPrice: number;
   clientInformation: string;
   createdAt: string;
   userId: Function;
   isPaid:  boolean
+};
+
+export type invoiceSummary = {
+  totalPrice: number;
+  shippingPrice: number;
+  subTotal: number;
 };
