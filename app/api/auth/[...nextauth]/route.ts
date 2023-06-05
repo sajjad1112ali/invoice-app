@@ -1,9 +1,14 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
-import { compare } from "bcrypt";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
+import { compare } from "bcrypt";
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'jwt'
+  },
   providers: [
     CredentialsProvider({
       credentials: {
@@ -28,6 +33,26 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    session({ session, token}) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.yooo = token.yooo;
+        return session
+      }
+      return session
+    },
+    jwt({ token, account, user }) {
+      if (account) {
+        token.accessToken= account.access_token
+        token.id = user.id;
+      }
+      return token;
+
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
