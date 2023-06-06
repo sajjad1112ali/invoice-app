@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { DocumentDownloadIcon } from "@heroicons/react/outline";
-import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
-import { DateTime } from "luxon";
+import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
+import { formateDate } from "@/lib/functions";
 
 type privateProps = {
   items: Array<InvoiceItem>;
@@ -50,9 +50,7 @@ const InvoicePDF = ({
     return Object.values(obj).some((value) => value === "");
   };
   const validateAndGetPDFData = () => {
-    let dueDate = clientInfo.dueDate
-    const date = DateTime.fromISO(dueDate);
-                const dueDateFormatted = date.toFormat("LLL dd, yyyy");
+    
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     const isClientInformationValid = validateCustomerInformation(clientInfo);
@@ -110,7 +108,7 @@ const InvoicePDF = ({
           margin: [0, 10, 0, 0],
           columns: [
             {text: `Due Date: `, style: "paragraphs", width: 55},
-            {text: dueDateFormatted, style: "paragraphs", bold: true},
+            {text: formateDate(clientInfo.dueDate), style: "paragraphs", bold: true},
           ]
          },
         { text: "Items", style: "subheader", margin: [0, 20, 0, 5] },

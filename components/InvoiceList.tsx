@@ -1,8 +1,7 @@
 "use client"
 import { useState } from 'react';
 import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
-import { DateTime } from "luxon";
-
+import { formateDate } from "@/lib/functions";
 import Link from "next/link";
 import Modal from './Modal';
 type privateProps = {
@@ -55,7 +54,7 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                   Date
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Date
+                  Due Date
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Status
@@ -67,10 +66,8 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
             </thead>
             <tbody>
               {invoicesData.map((elem: SingleInvoice) => {
-                const { id, clientInformation, createdAt, items, isPaid, shippingPrice, totalPrice } = elem;
+                const { id, clientInformation, dueDate, createdAt, items, isPaid, shippingPrice, totalPrice } = elem;
                 const clientData: ClientInfo = JSON.parse(clientInformation);
-                const date = DateTime.fromISO(createdAt);
-                const formattedDate = date.toFormat("LLL dd, yyyy");
 
                 const tblRowClass = isPaid
                   ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700"
@@ -85,8 +82,8 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                     </th>
                     <td className="px-6 py-4 ">{totalPrice}</td>
                     <td className="px-6 py-4 ">{shippingPrice}</td>
-                    <td className="px-6 py-4">{formattedDate}</td>
-                    <td className="px-6 py-4">{createdAt}</td>
+                    <td className="px-6 py-4">{formateDate(createdAt)}</td>
+                    <td className="px-6 py-4">{formateDate(dueDate)}</td>
                     <td className="px-6 py-4">
                       <span
                         className={`${
