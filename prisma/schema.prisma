@@ -19,6 +19,7 @@ model Invoice {
   clientInformation  String   @db.Text
   items              String   @db.Text
   createdAt          DateTime @default(now())
+  dueDate          DateTime @default(now())
   userId             Int
   user               User     @relation(fields: [userId], references: [id])
   totalPrice         Int

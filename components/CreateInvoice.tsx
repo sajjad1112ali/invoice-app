@@ -21,6 +21,7 @@ function CreateInvoice({invoiceData, isEditMode}: privateProps) {
     name: customerInforForEdit ? customerInforForEdit.name: "",
     email: customerInforForEdit ? customerInforForEdit.email: "",
     phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber: "",
+    dueDate: customerInforForEdit ? customerInforForEdit.dueDate: "",
   }
   const [items, setItems] = useState<InvoiceItem[]>(
     defaulfItem,

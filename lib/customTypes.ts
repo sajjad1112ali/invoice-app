@@ -9,6 +9,7 @@ export type ClientInfo = {
   name: string;
   email: string;
   phoneNumber: string;
+  dueDate: string;
   [key: string]: any;
 
 };
@@ -21,6 +22,7 @@ export type SingleInvoice = {
   totalPrice: number;
   clientInformation: string;
   createdAt: string;
+  dueDate: string;
   userId: Function;
   isPaid:  boolean
 };

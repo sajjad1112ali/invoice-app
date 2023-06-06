@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { DocumentDownloadIcon } from "@heroicons/react/outline";
 import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
+import { DateTime } from "luxon";
 
 type privateProps = {
   items: Array<InvoiceItem>;
@@ -49,6 +50,9 @@ const InvoicePDF = ({
     return Object.values(obj).some((value) => value === "");
   };
   const validateAndGetPDFData = () => {
+    let dueDate = clientInfo.dueDate
+    const date = DateTime.fromISO(dueDate);
+                const dueDateFormatted = date.toFormat("LLL dd, yyyy");
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     const isClientInformationValid = validateCustomerInformation(clientInfo);
@@ -102,6 +106,13 @@ const InvoicePDF = ({
         },
         { text: clientInfo.phoneNumber, style: "paragraphs" },
         { text: clientInfo.email, style: "paragraphs" },
+        { 
+          margin: [0, 10, 0, 0],
+          columns: [
+            {text: `Due Date: `, style: "paragraphs", width: 55},
+            {text: dueDateFormatted, style: "paragraphs", bold: true},
+          ]
+         },
         { text: "Items", style: "subheader", margin: [0, 20, 0, 5] },
         generateItemsTable(items),
         // {
@@ -259,6 +270,7 @@ const InvoicePDF = ({
         clientInformation: JSON.stringify(clientInfo),
         totalPrice: totalPrice,
         shippingPrice: shippingPrice,
+        dueDate: clientInfo.dueDate,
         items: JSON.stringify(items),
       }),
     }).then(async (res) => {
@@ -273,7 +285,7 @@ const InvoicePDF = ({
           router.refresh();
           router.push("/dashboard");
         } else {
-          resetForm();
+          //resetForm();
         }
       } else {
         const { error } = await res.json();

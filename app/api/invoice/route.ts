@@ -3,8 +3,14 @@ import { NextApiRequest } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { userId, clientInformation, items, totalPrice, shippingPrice } =
-    await req.json();
+  const {
+    userId,
+    clientInformation,
+    items,
+    totalPrice,
+    shippingPrice,
+    dueDate,
+  } = await req.json();
   try {
     const user = await prisma.invoice.create({
       data: {
@@ -13,10 +19,12 @@ export async function POST(req: Request) {
         items,
         totalPrice,
         shippingPrice,
+        dueDate: new Date(dueDate).toISOString(),
       },
     });
     return NextResponse.json(user);
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: "Got error" }, { status: 400 });
   }
 }
