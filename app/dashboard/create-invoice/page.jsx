@@ -3,7 +3,7 @@ import CreateInvoice from "@/components/CreateInvoice";
 function page() {
 
   return (
-    <CreateInvoice />
+    <CreateInvoice isEditMode={false}/>
   );
 };
 

@@ -103,6 +103,12 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                       >
                         View
                       </span>
+                      <Link
+                        className="ml-3 font-medium text-blue-600 dark:text-blue-500 hover:underline hover:cursor-pointer"
+                        href={`/dashboard/update-invoice/${id}`}
+                      >
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 );

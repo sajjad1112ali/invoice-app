@@ -1,14 +1,9 @@
-"use client";
-import { useState, useEffect } from "react";
 import InvoiceList from "@/components/InvoiceList";
-const BASE_URL = "http://localhost:3000";
+const API_URL = process.env.API_URL;
 const Home = async () => {
-  const res = await fetch(`${BASE_URL}/api/invoice`, {
+  const res = await fetch(`${API_URL}/api/invoice`, {
     method: "GET",
     cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
   const invoicesData = await res.json();
 

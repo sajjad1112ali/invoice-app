@@ -1,6 +1,8 @@
+"use client";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { DocumentDownloadIcon } from "@heroicons/react/outline";
 import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
@@ -10,13 +12,21 @@ type privateProps = {
   clientInfo: ClientInfo;
   resetForm?: Function;
   downloadTriggeredFromModal?: number;
+  isEditMode: boolean;
 };
 // Register the fonts with pdfmake
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }: privateProps) => {
+const InvoicePDF = ({
+  items,
+  clientInfo,
+  resetForm,
+  downloadTriggeredFromModal,
+  isEditMode,
+}: privateProps) => {
   let totalPrice = 0;
   let shippingPrice = 100;
+  const router = useRouter();
 
   const isValidInput = (inputValue: string | number, name: string) => {
     if (name === "name") return inputValue !== "";
@@ -36,14 +46,16 @@ const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }
     });
   };
   const validateCustomerInformation = (obj: ClientInfo) => {
-    return Object.values(obj).some((value) => value === '');
-
+    return Object.values(obj).some((value) => value === "");
   };
   const validateAndGetPDFData = () => {
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     const isClientInformationValid = validateCustomerInformation(clientInfo);
-    if ((foundUnsatisfiedItem || isClientInformationValid) && !downloadTriggeredFromModal) {
+    if (
+      (foundUnsatisfiedItem || isClientInformationValid) &&
+      !downloadTriggeredFromModal
+    ) {
       toast.error("Validation errors occurred for some items.");
       return false;
     }
@@ -118,15 +130,14 @@ const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }
     return documentDefinition;
   };
   const generatePDF = (pdfData, id: number) => {
-    pdfData.content[2].columns[1][0].stack[0].text = `Invoice No: ${id}`
+    pdfData.content[2].columns[1][0].stack[0].text = `Invoice No: ${id}`;
     pdfMake.createPdf(pdfData).open();
   };
 
   const generateItemsTable = (items: Array<InvoiceItem>) => {
     let totalItemsAmount = 0;
-    
-    const tableBody = items.map((item) => {
 
+    const tableBody = items.map((item) => {
       const sum = item.price * item.qty;
       totalItemsAmount += sum;
       return [
@@ -230,17 +241,16 @@ const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }
     };
   };
   const saveInvoice = () => {
-    console.log(`downloadTriggeredFromModal = ${downloadTriggeredFromModal}`)
     const isValid = validateAndGetPDFData();
-    
+
     if (isValid === false) return false;
     if (downloadTriggeredFromModal) {
       generatePDF(isValid, downloadTriggeredFromModal);
       return;
     }
-    console.log('GENERATING PDF. . . .')
+    const requestMethod = isEditMode ? "PUT" : "POST";
     fetch("/api/invoice", {
-      method: "POST",
+      method: requestMethod,
       headers: {
         "Content-Type": "application/json",
       },
@@ -254,11 +264,17 @@ const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }
     }).then(async (res) => {
       // setLoading(false);
       const data = await res.json();
-      const {id} = data;
+      const { id } = data;
       if (res.status === 200) {
-        toast.success("Saved...");
+        const statusMessage = isEditMode ? "Invoice saved successfully" :  "Invoice updated successfully"
+        toast.success(statusMessage);
         generatePDF(isValid, id);
-        resetForm()
+        if(isEditMode){
+          router.refresh();
+          router.push("/dashboard");
+        } else {
+          resetForm();
+        }
       } else {
         const { error } = await res.json();
         toast.error(error);
@@ -271,7 +287,7 @@ const InvoicePDF = ({ items, clientInfo, resetForm, downloadTriggeredFromModal }
       onClick={saveInvoice}
       className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-3 py-2 mx-3 rounded"
     >
-      <DocumentDownloadIcon className="h-5 w-5" />
+      {isEditMode ? "Update" : <DocumentDownloadIcon className="h-5 w-5" />}
     </button>
   );
 };

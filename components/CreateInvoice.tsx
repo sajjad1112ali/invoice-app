@@ -1,26 +1,35 @@
 "use client";
-import { ClientInfo, InvoiceItem } from "@/lib/customTypes";
+import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
 import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/outline";
 
 import React, { useState } from "react";
 import InvoicePDF from "@/components/InvoicePDF";
 import { ClientInformation } from "./Invoice/ClientInformation";
-
-function CreateInvoice() {
-  const defaulfItem: InvoiceItem = { name: "", price: 0, qty: 0 }
-  const defaultClientInfo: ClientInfo = {
-    name: "",
-    email: "",
-    phoneNumber: "",
+type privateProps = {
+  invoiceData?: SingleInvoice;
+  isEditMode: boolean 
+};
+function CreateInvoice({invoiceData, isEditMode}: privateProps) {
+  let customerInforForEdit = null
+  let itemsforForEdit = null
+  if (isEditMode && invoiceData) {
+    customerInforForEdit = JSON.parse(invoiceData.clientInformation)
+    itemsforForEdit = JSON.parse(invoiceData.items)
   }
-  const [items, setItems] = useState<InvoiceItem[]>([
+  const defaulfItem: InvoiceItem[] = itemsforForEdit || [{ name: "", price: 0, qty: 0 }]
+  const defaultClientInfo: ClientInfo = {
+    name: customerInforForEdit ? customerInforForEdit.name: "",
+    email: customerInforForEdit ? customerInforForEdit.email: "",
+    phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber: "",
+  }
+  const [items, setItems] = useState<InvoiceItem[]>(
     defaulfItem,
-  ]);
+  );
 
   const [clientInfo, setClientInfo] = useState<ClientInfo>(defaultClientInfo);
   
   const addItem = () => {
-    setItems([...items, defaulfItem]);
+    setItems([...items, ...defaulfItem]);
   };
 
   const removeItem = (index: number) => {
@@ -50,7 +59,7 @@ function CreateInvoice() {
   };
 
   const resetForm = () => {
-    setItems([defaulfItem]);
+    setItems([...defaulfItem]);
     setClientInfo(defaultClientInfo);
   };
   return (
@@ -105,7 +114,7 @@ function CreateInvoice() {
           >
             <PlusCircleIcon className="h-5 w-5" />
           </button>
-          <InvoicePDF items={items} clientInfo={clientInfo} resetForm={resetForm}/>
+          <InvoicePDF items={items} clientInfo={clientInfo} resetForm={resetForm} isEditMode={isEditMode}/>
         </div>
       </div>
     </>
