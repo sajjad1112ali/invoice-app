@@ -13,7 +13,7 @@ async function page ({ params }) {
   const invoice: SingleInvoice = await res.json();
   return (
     <>
-      <CreateInvoice invoiceData={invoice} isEditMode ={true}/>
+      <CreateInvoice invoiceData={invoice} isEditMode ={true} id={params.invoiceId}/>
     </>
   );
 };

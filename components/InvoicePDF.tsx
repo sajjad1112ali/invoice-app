@@ -13,6 +13,8 @@ type privateProps = {
   clientInfo: ClientInfo;
   resetForm?: Function;
   downloadTriggeredFromModal?: number;
+  shipping?: number;
+  id?: number;
   isEditMode: boolean;
 };
 // Register the fonts with pdfmake
@@ -24,9 +26,11 @@ const InvoicePDF = ({
   resetForm,
   downloadTriggeredFromModal,
   isEditMode,
+  id,
+  shipping,
 }: privateProps) => {
   let totalPrice = 0;
-  let shippingPrice = 100;
+  let shippingPrice = shipping;
   const router = useRouter();
 
   const isValidInput = (inputValue: string | number, name: string) => {
@@ -270,6 +274,7 @@ const InvoicePDF = ({
         shippingPrice: shippingPrice,
         dueDate: clientInfo.dueDate,
         items: JSON.stringify(items),
+        id,
       }),
     }).then(async (res) => {
       // setLoading(false);
@@ -283,7 +288,7 @@ const InvoicePDF = ({
           router.refresh();
           router.push("/dashboard");
         } else {
-          //resetForm();
+          resetForm();
         }
       } else {
         const { error } = await res.json();

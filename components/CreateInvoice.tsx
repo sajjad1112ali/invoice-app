@@ -7,28 +7,36 @@ import InvoicePDF from "@/components/InvoicePDF";
 import { ClientInformation } from "./Invoice/ClientInformation";
 type privateProps = {
   invoiceData?: SingleInvoice;
-  isEditMode: boolean 
+  isEditMode: boolean;
+  id?: number;
 };
-function CreateInvoice({invoiceData, isEditMode}: privateProps) {
-  let customerInforForEdit = null
-  let itemsforForEdit = null
+function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
+  let customerInforForEdit = null;
+  let itemsforForEdit = null;
+  let shippingAmount: number = 0;
   if (isEditMode && invoiceData) {
-    customerInforForEdit = JSON.parse(invoiceData.clientInformation)
-    itemsforForEdit = JSON.parse(invoiceData.items)
+    customerInforForEdit = JSON.parse(invoiceData.clientInformation);
+    itemsforForEdit = JSON.parse(invoiceData.items);
+    shippingAmount = invoiceData.shippingPrice
   }
-  const defaulfItem: InvoiceItem[] = itemsforForEdit || [{ name: "", price: 0, qty: 0 }]
+  const showShippingTb = shippingAmount > 0
+  const defaulfItem: InvoiceItem[] = [
+    { name: "", price: 0, qty: 0 },
+  ];
   const defaultClientInfo: ClientInfo = {
-    name: customerInforForEdit ? customerInforForEdit.name: "",
-    email: customerInforForEdit ? customerInforForEdit.email: "",
-    phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber: "",
-    dueDate: customerInforForEdit ? customerInforForEdit.dueDate: "",
-  }
-  const [items, setItems] = useState<InvoiceItem[]>(
-    defaulfItem,
-  );
+    name: customerInforForEdit ? customerInforForEdit.name : "",
+    email: customerInforForEdit ? customerInforForEdit.email : "",
+    phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber : "",
+    dueDate: customerInforForEdit ? customerInforForEdit.dueDate : "",
+  };
+  console.log(`isEditMode = ${isEditMode}`)
+  const defaultInvoiceItems = isEditMode ? itemsforForEdit : defaulfItem
+  const [items, setItems] = useState<InvoiceItem[]>(defaultInvoiceItems);
+  const [showShipping, setShowShipping] = useState(showShippingTb);
+  const [shipping, setShipping] = useState(shippingAmount);
 
   const [clientInfo, setClientInfo] = useState<ClientInfo>(defaultClientInfo);
-  
+
   const addItem = () => {
     setItems([...items, ...defaulfItem]);
   };
@@ -63,11 +71,45 @@ function CreateInvoice({invoiceData, isEditMode}: privateProps) {
     setItems([...defaulfItem]);
     setClientInfo(defaultClientInfo);
   };
+
+  const handleCheckboxChange = () => {
+    setShowShipping(!showShipping);
+  };
   return (
     <>
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-4">Create Invoice</h1>
-        <ClientInformation clientInfo={clientInfo} handleClientInfoChange={handleClientInfoChange}/>
+        <ClientInformation
+          clientInfo={clientInfo}
+          handleClientInfoChange={handleClientInfoChange}
+        />
+
+        <div className="mb-4">
+          <label>
+            <input
+              type="checkbox"
+              checked={showShipping}
+              onChange={handleCheckboxChange}
+              className=" mr-1"
+            />
+            Set Shipping
+          </label>
+        </div>
+
+        {showShipping && (
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Shipping
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="number"
+              name="shipping"
+              value={shipping}
+              onChange={(event) => setShipping(+event.target.value)}
+            />
+          </div>
+        )}
         <div className="flex">
           <p className="flex-1 px-4">Product</p>
           <p className="w-20">Price</p>
@@ -115,7 +157,14 @@ function CreateInvoice({invoiceData, isEditMode}: privateProps) {
           >
             <PlusCircleIcon className="h-5 w-5" />
           </button>
-          <InvoicePDF items={items} clientInfo={clientInfo} resetForm={resetForm} isEditMode={isEditMode}/>
+          <InvoicePDF
+            items={items}
+            clientInfo={clientInfo}
+            resetForm={resetForm}
+            isEditMode={isEditMode}
+            id={id}
+            shipping={shipping}
+          />
         </div>
       </div>
     </>

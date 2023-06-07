@@ -51,12 +51,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: Request) {
-  const { userId, clientInformation, items, totalPrice, shippingPrice } =
+  const { id, userId, clientInformation, items, totalPrice, shippingPrice } =
     await req.json();
   try {
     const user = await prisma.invoice.update({
       where: {
-        id: 31,
+        id: +id,
       },
       data: {
         userId,
