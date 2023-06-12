@@ -16,6 +16,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   let shippingAmount: number = 0;
   if (isEditMode && invoiceData) {
     customerInforForEdit = JSON.parse(invoiceData.clientInformation);
+    console.log(customerInforForEdit)
     itemsforForEdit = JSON.parse(invoiceData.items);
     shippingAmount = invoiceData.shippingPrice
   }
@@ -29,7 +30,6 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
     phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber : "",
     dueDate: customerInforForEdit ? customerInforForEdit.dueDate : "",
   };
-  console.log(`isEditMode = ${isEditMode}`)
   const defaultInvoiceItems = isEditMode ? itemsforForEdit : defaulfItem
   const [items, setItems] = useState<InvoiceItem[]>(defaultInvoiceItems);
   const [showShipping, setShowShipping] = useState(showShippingTb);

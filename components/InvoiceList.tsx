@@ -1,25 +1,78 @@
-"use client"
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
 import { formateDate } from "@/lib/functions";
 import Link from "next/link";
-import Modal from './Modal';
+import toast from "react-hot-toast";
+import Modal from "./Modal";
 type privateProps = {
-  invoicesData: Array<SingleInvoice>;
+  invoicesData: Array<SingleInvoice> | [];
+  setData: Function
 };
-const InvoiceList = ({ invoicesData }: privateProps) => {
+const InvoiceList = ({ invoicesData, setData }: privateProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceItems, setInvoiceItems] = useState<SingleInvoice>();
 
   const openModal = (items: SingleInvoice) => {
-    setInvoiceItems(items)
+    setInvoiceItems(items);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
+  const updateStatus = (id: number) => {
+    setData((prevData) => {
+      const updatedData = prevData.map((object) => {
+        if (object.id === id) {
+          return {
+            ...object,
+            isPaid: !object.isPaid, // Toggle the isValid value
+          };
+        }
+        return object;
+      });
+      return updatedData;
+    });
+  };
+  const handleConfirmation = async (invoice: SingleInvoice) => {
+    const { id } = invoice
+    const userConfirmation = window.confirm(
+      "Are you sure you want to update?" +id
+    );
+    if (userConfirmation) {
+      try {
+        // Make the API call here
+       
+        
+        fetch(`/api/invoice/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(async (res) => {
+          // setLoading(false);
+          const data = await res.json();
+          console.log(data)
+          
+          const { id } = data;
+          if (res.status === 200) {
+            updateStatus(id)
+          } else {
+            const { error } = await res.json();
+            toast.error(error);
+          }
+        });
 
+        // Process the API response
+        // ...
+      } catch (error) {
+        // Handle any errors that occurred during the API call
+        // ...
+        console.log(`NOT CALLING APIs`);
+      }
+    }
+  };
   return (
     <>
       <div className="sm:px-5">
@@ -48,7 +101,7 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                   Total Price
                 </th>
                 <th scope="col" className="px-6 py-3">
-                Shipping Price
+                  Shipping Price
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Date
@@ -66,7 +119,16 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
             </thead>
             <tbody>
               {invoicesData.map((elem: SingleInvoice) => {
-                const { id, clientInformation, dueDate, createdAt, items, isPaid, shippingPrice, totalPrice } = elem;
+                const {
+                  id,
+                  clientInformation,
+                  dueDate,
+                  createdAt,
+                  items,
+                  isPaid,
+                  shippingPrice,
+                  totalPrice,
+                } = elem;
                 const clientData: ClientInfo = JSON.parse(clientInformation);
 
                 const tblRowClass = isPaid
@@ -85,13 +147,36 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
                     <td className="px-6 py-4">{formateDate(createdAt)}</td>
                     <td className="px-6 py-4">{formateDate(dueDate)}</td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`${
+                      <div
+                        className={`flex justify-around ${
                           isPaid ? "bg-green-500" : "bg-red-500"
                         } text-white text-10 w-20 py-1 rounded inline-block text-center`}
+                        onClick={() => {
+                          if (!isPaid) {
+                            handleConfirmation(elem);
+                          }
+                        }}
                       >
-                        {isPaid ? "paid" : "unpaid"}
-                      </span>
+                        <span>{isPaid ? "paid" : "unpaid"}</span>
+
+                       {
+                        !isPaid && (<svg
+                          fill="none"
+                          className="w-5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                          ></path>
+                        </svg>)
+                       } 
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -113,7 +198,11 @@ const InvoiceList = ({ invoicesData }: privateProps) => {
             </tbody>
           </table>
         </div>
-        <Modal isOpen={isOpen} closeModal={closeModal} invoiceDetails={invoiceItems}/>
+        <Modal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          invoiceDetails={invoiceItems}
+        />
       </div>
     </>
   );

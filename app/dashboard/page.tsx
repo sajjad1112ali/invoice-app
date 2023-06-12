@@ -1,16 +1,24 @@
+"use client";
 import InvoiceList from "@/components/InvoiceList";
-const API_URL = process.env.API_URL;
+import { SingleInvoice } from "@/lib/customTypes";
+import { useEffect, useState } from "react";
 const Home = async () => {
-  const res = await fetch(`${API_URL}/api/invoice`, {
-    method: "GET",
-    cache: "no-store",
-  });
-  const invoicesData = await res.json();
+  const [data, setData] = useState<SingleInvoice[]>([]);
 
+  useEffect(() => {
+    fetch(`/api/invoice`, {
+        method: "GET",
+        cache: "no-store",
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
   return (
     <div className="max-w-7xl w-full mx-auto">
       {/* <InvoiceList invoicesData={invoicesData} /> */}
-      <InvoiceList invoicesData={invoicesData} />
+      <InvoiceList invoicesData={data} setData={setData}/>
     </div>
   );
 };

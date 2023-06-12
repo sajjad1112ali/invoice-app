@@ -109,7 +109,7 @@ const Modal = ({ isOpen, closeModal, invoiceDetails }: privateProps) => {
                   >
                     Close
                   </button>
-                  <InvoicePDF items={invoiceItemsData} clientInfo={clientInformationData} downloadTriggeredFromModal={id}/>
+                  <InvoicePDF items={invoiceItemsData} clientInfo={clientInformationData} downloadTriggeredFromModal={id} isEditMode={false} shipping={shippingPrice}/>
                 </div>
               </div>
             </div>
