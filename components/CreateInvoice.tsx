@@ -78,6 +78,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   };
   return (
     <>
+    <div className="px-2">
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-4">Create Invoice</h1>
         <ClientInformation
@@ -111,46 +112,51 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
             />
           </div>
         )}
-        <div className="flex">
+        <div className="hidden md:flex">
           <p className="flex-1 px-4">Product</p>
           <p className="w-20">Price</p>
           <p className="w-20">Quantity</p>
         </div>
         {items.map((item, index) => (
-          <div key={index} className="flex mb-4">
+          <div key={index} className="flex-none md:flex mb-4">
+            <p className="block md:hidden">Product</p>
             <input
               type="text"
               name="name"
               value={item.name}
               onChange={(event) => handleChange(event, index)}
               placeholder="Item Name"
-              className="flex-1 border rounded-l px-4 py-2 focus:outline-none"
+              className="flex-none md:flex-1 border rounded-l px-4 py-2 focus:outline-none w-full md:w-auto "
             />
+            <p className="block md:hidden">Price</p>
             <input
               type="number"
               name="price"
               value={item.price}
               onChange={(event) => handleChange(event, index)}
               placeholder="Price"
-              className="w-20 border rounded-r px-4 py-2 focus:outline-none"
+              className="w-full md:w-20 border rounded-r px-4 py-2 focus:outline-none"
             />
+            <p className="block md:hidden">Quantity</p>
             <input
               type="number"
               name="qty"
               value={item.qty}
               onChange={(event) => handleChange(event, index)}
               placeholder="Quantity"
-              className="w-20 border rounded-r px-4 py-2 focus:outline-none"
+              className="w-full md:w-20 border rounded-r px-4 py-2 focus:outline-none"
             />
+            <div className="flex w-full md:width-20 justify-center">
             <button
               onClick={() => removeItem(index)}
-              className="ml-2 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none"
+              className="md:ml-2 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none mt-2 md:mt-auto"
             >
               <MinusCircleIcon className="h-5 w-5" />
             </button>
+            </div>
+            <div className="border my-2 border-gray-300 block md:hidden"></div>
           </div>
         ))}
-
         <div className="flex mb-4">
           <button
             onClick={addItem}
@@ -167,6 +173,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
             shipping={shipping}
           />
         </div>
+      </div>
       </div>
     </>
   );
