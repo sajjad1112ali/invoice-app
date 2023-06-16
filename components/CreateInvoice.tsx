@@ -70,6 +70,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   const resetForm = () => {
     setItems([...defaulfItem]);
     setClientInfo(defaultClientInfo);
+    setShowShipping(false);
   };
 
   const handleCheckboxChange = () => {
