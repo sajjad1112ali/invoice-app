@@ -5,10 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getUserId = async () => {
   const session = await getServerSession(authOptions);
-  console.log("\x1b[36m%s\x1b[0m", "-----------------------userId-----------------------******");
-  console.log(session.user);
-  console.log("\x1b[36m%s\x1b[0m", "----------------------------------------------******");
- 
   return session.user?.id;
 };
 
