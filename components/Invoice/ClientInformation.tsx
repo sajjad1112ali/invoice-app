@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 
 import { ClientInfo } from "@/lib/customTypes";
+import { getDateByFormat } from "@/lib/functions";
 type privateProps = {
   clientInfo: ClientInfo;
   handleClientInfoChange: Function;
 };
 export const ClientInformation = ({clientInfo, handleClientInfoChange}: privateProps) => {
-
 
   return (
     <div>
@@ -55,6 +55,7 @@ export const ClientInformation = ({clientInfo, handleClientInfoChange}: privateP
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="date"
           name="dueDate"
+          min={`${getDateByFormat()}`}
           value={clientInfo.dueDate}
           onChange={(event) => handleClientInfoChange(event, "dueDate")}
         />
