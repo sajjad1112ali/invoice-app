@@ -1,15 +1,17 @@
 import prisma from "@/lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
 import { NextRequest, NextResponse } from "next/server";
 
+const getUserId = async () => {
+  const session = await getServerSession(authOptions);
+  return session.user?.id;
+};
+
 export async function POST(req: Request) {
-  const {
-    userId,
-    clientInformation,
-    items,
-    totalPrice,
-    shippingPrice,
-    dueDate,
-  } = await req.json();
+  const userId = await getUserId();
+  const { clientInformation, items, totalPrice, shippingPrice, dueDate } =
+    await req.json();
   try {
     const user = await prisma.invoice.create({
       data: {
@@ -23,13 +25,15 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(user);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json({ error: "Got error" }, { status: 400 });
   }
 }
 
 export async function GET(req: NextRequest) {
   try {
+    const userId: number = await getUserId();
+
     let data = null;
     const invoiceId = req.nextUrl.searchParams.get("id");
     if (invoiceId) {
@@ -39,8 +43,11 @@ export async function GET(req: NextRequest) {
         },
       });
     } else {
-      data = await prisma.invoice.findMany();
-
+      data = await prisma.invoice.findMany({
+        where: {
+          userId,
+        },
+      });
     }
     return NextResponse.json(data);
   } catch (error) {

@@ -6,7 +6,6 @@ import SignOut from "./sign-out";
 
 export default async function AuthStatus() {
    const session = await getServerSession(authOptions);
-
   return (
     <>
       {session && (
