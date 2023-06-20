@@ -1,4 +1,3 @@
-
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import toast from "react-hot-toast";
@@ -54,7 +53,6 @@ const InvoicePDF = ({
     return Object.values(obj).some((value) => value === "");
   };
   const validateAndGetPDFData = () => {
-    
     // Define the document definition
     const foundUnsatisfiedItem = validateItems();
     const isClientInformationValid = validateCustomerInformation(clientInfo);
@@ -108,13 +106,17 @@ const InvoicePDF = ({
         },
         { text: clientInfo.phoneNumber, style: "paragraphs" },
         { text: clientInfo.email, style: "paragraphs" },
-        { 
+        {
           margin: [0, 10, 0, 0],
           columns: [
-            {text: `Due Date: `, style: "paragraphs", width: 55},
-            {text: formateDate(clientInfo.dueDate), style: "paragraphs", bold: true},
-          ]
-         },
+            { text: `Due Date: `, style: "paragraphs", width: 55 },
+            {
+              text: formateDate(clientInfo.dueDate),
+              style: "paragraphs",
+              bold: true,
+            },
+          ],
+        },
         { text: "Items", style: "subheader", margin: [0, 20, 0, 5] },
         generateItemsTable(items),
         // {
@@ -281,10 +283,12 @@ const InvoicePDF = ({
       const data = await res.json();
       const { id } = data;
       if (res.status === 200) {
-        const statusMessage = isEditMode ? "Invoice saved successfully" :  "Invoice updated successfully"
+        const statusMessage = isEditMode
+          ? "Invoice saved successfully"
+          : "Invoice updated successfully";
         toast.success(statusMessage);
         generatePDF(isValid, id);
-        if(isEditMode){
+        if (isEditMode) {
           router.refresh();
           router.push("/dashboard");
         } else {
