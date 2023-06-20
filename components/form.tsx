@@ -27,8 +27,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
               setLoading(false);
               toast.error(error);
             } else {
-              console.log('<<<<< LOGIN SUCCESS >>>>>')
-              // router.refresh();
+              router.refresh();
               router.push("/dashboard");
             }
           });
