@@ -27,7 +27,8 @@ export default function Form({ type }: { type: "login" | "register" }) {
               setLoading(false);
               toast.error(error);
             } else {
-              router.refresh();
+              console.log('<<<<< LOGIN SUCCESS >>>>>')
+              // router.refresh();
               router.push("/dashboard");
             }
           });
@@ -105,18 +106,18 @@ export default function Form({ type }: { type: "login" | "register" }) {
       </button>
       {type === "login" ? (
         <p className="text-center text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
+          Don&apos;t have an account?
           <Link href="/register" className="font-semibold text-gray-800">
             Sign up
-          </Link>{" "}
+          </Link>
           for free.
         </p>
       ) : (
         <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          Already have an account?
           <Link href="/login" className="font-semibold text-gray-800">
             Sign in
-          </Link>{" "}
+          </Link>
           instead.
         </p>
       )}
