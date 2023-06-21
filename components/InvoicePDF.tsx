@@ -63,7 +63,7 @@ const InvoicePDF = ({
       toast.error("Validation errors occurred for some items.");
       return false;
     }
-    const documentDefinition = {
+    const documentDefinition: pdfMake = {
       content: [
         { text: "Invoice", style: "header" },
         {

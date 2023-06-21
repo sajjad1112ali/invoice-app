@@ -32,7 +32,6 @@ export async function POST(req: Request) {
 
 export async function GET(req: NextRequest) {
   try {
-
     let data = null;
     const invoiceId = req.nextUrl.searchParams.get("id");
     if (invoiceId) {
@@ -42,7 +41,7 @@ export async function GET(req: NextRequest) {
         },
       });
     } else {
-    const userId: number = await getUserId();
+      const userId: number = await getUserId();
 
       data = await prisma.invoice.findMany({
         where: {
