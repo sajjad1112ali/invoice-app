@@ -34,6 +34,8 @@ export async function GET(req: NextRequest) {
   try {
     let data = null;
     const invoiceId = req.nextUrl.searchParams.get("id");
+    console.log('<<<<<<<<<<<<<<<<<<<<<<invoiceId>>>>>>>>>>>>>>>>>>>>>>')
+    console.log(invoiceId)
     if (invoiceId) {
       data = await prisma.invoice.findUnique({
         where: {
@@ -51,6 +53,8 @@ export async function GET(req: NextRequest) {
     }
     return NextResponse.json(data);
   } catch (error) {
+    console.log('<<<<<<<<<<<<<<<<<<<<<<error>>>>>>>>>>>>>>>>>>>>>>')
+    console.log(error)
     return NextResponse.json({ error: "Got error" }, { status: 400 });
   }
 }
