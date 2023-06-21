@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     }
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: "Got error", invoiceId: `THE ID = ${invoiceId}` }, { status: 400 });
+    return NextResponse.json({ error: "Got error . . . .", invoiceId: `THE ID = ${invoiceId}` }, { status: 400 });
   }
 }
 
