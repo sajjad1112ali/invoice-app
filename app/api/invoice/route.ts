@@ -1,12 +1,23 @@
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, } from "next/server";
+import { NextApiRequest } from "next";
 
 const getUserId = async () => {
   const session = await getServerSession(authOptions);
   return session.user?.id;
 };
+
+function getQSParamFromURL(
+  key: string,
+  url: string | undefined
+): string | null {
+  if (!url) return "";
+  const search = new URL(url).search;
+  const urlParams = new URLSearchParams(search);
+  return urlParams.get(key);
+}
 
 export async function POST(req: Request) {
   const userId = await getUserId();
@@ -25,13 +36,15 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(user);
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Got error" }, { status: 400 });
   }
 }
 
-export async function GET(req: NextRequest) {
-  const invoiceId = req.nextUrl.searchParams.get("id");
+export async function GET(req: NextApiRequest) {
+  const invoiceId = getQSParamFromURL('id', req.url)
+  const {
+    query,
+  } = req;
   try {
 
     let data = null;

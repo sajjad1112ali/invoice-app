@@ -53,7 +53,6 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
         }).then(async (res) => {
           // setLoading(false);
           const data = await res.json();
-          console.log(data)
           
           const { id } = data;
           if (res.status === 200) {
@@ -69,7 +68,6 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
       } catch (error) {
         // Handle any errors that occurred during the API call
         // ...
-        console.log(`NOT CALLING APIs`);
       }
     }
   };
