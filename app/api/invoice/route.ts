@@ -42,9 +42,6 @@ export async function POST(req: Request) {
 
 export async function GET(req: NextApiRequest) {
   const invoiceId = getQSParamFromURL('id', req.url)
-  const {
-    query,
-  } = req;
   try {
 
     let data = null;
@@ -65,7 +62,7 @@ export async function GET(req: NextApiRequest) {
     }
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: "Got error", invoiceId }, { status: 400 });
+    return NextResponse.json({ error: "Got error.......", invoiceId, URL: req.url }, { status: 400 });
   }
 }
 

@@ -11,6 +11,8 @@ async function page ({ params }) {
     },
   });
   const invoice: SingleInvoice = await res.json();
+  console.log(`<<<<<<<<<<<<<<<API RESPONSE >>>>>>>>>>>>>>>`)
+  console.log(invoice)
   return (
     <>
       <CreateInvoice invoiceData={invoice} isEditMode ={true} id={params.invoiceId}/>
