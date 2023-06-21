@@ -11,14 +11,10 @@ type privateProps = {
   id?: number;
 };
 function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
-  console.log(`isEditMode = ${isEditMode}`)
-  console.log(`invoiceData ======================>`)
-  console.log(invoiceData)
   let customerInforForEdit = null;
   let itemsforForEdit = null;
   let shippingAmount: number = 0;
   if (isEditMode && invoiceData) {
-  console.log(`Parsing Data ======================>`)
 
     customerInforForEdit = JSON.parse(invoiceData.clientInformation);
     console.log(customerInforForEdit);
