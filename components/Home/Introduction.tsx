@@ -1,3 +1,4 @@
+import React from 'react'
 function Introduction() {
   return (
 <div className="w-full md:w-1/2 xg:w-1/3 mx-auto px-4">
