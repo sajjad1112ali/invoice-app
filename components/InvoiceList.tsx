@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ClientInfo, InvoiceItem, SingleInvoice } from "@/lib/customTypes";
-import { formateDate } from "@/lib/functions";
+import { formateDate, isFutureDate } from "@/lib/functions";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Modal from "./Modal";
@@ -38,7 +38,7 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
   const handleConfirmation = async (invoice: SingleInvoice) => {
     const { id } = invoice
     const userConfirmation = window.confirm(
-      "Are you sure you want to update?" +id
+      "Are you sure you want to update?"
     );
     if (userConfirmation) {
       try {
@@ -128,10 +128,10 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
                   totalPrice,
                 } = elem;
                 const clientData: ClientInfo = JSON.parse(clientInformation);
-
+                const dueInFuture = isFutureDate(dueDate);
                 const tblRowClass = isPaid
                   ? "bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-                  : "border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700";
+                  : `border-b ${ dueInFuture ? 'bg-gray-50' : 'bg-red-400 text-white'} dark:bg-gray-800 dark:border-gray-700`;
                 return (
                   <tr key={id} className={tblRowClass}>
                     <th
@@ -147,7 +147,7 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
                     <td className="px-6 py-4">
                       <div
                         className={`flex justify-around ${
-                          isPaid ? "bg-green-500" : "bg-red-500"
+                          isPaid ? "bg-green-500" : "bg-red-700"
                         } text-white text-10 w-20 py-1 rounded inline-block text-center`}
                         onClick={() => {
                           if (!isPaid) {
@@ -178,13 +178,13 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:cursor-pointer"
+                        className={`font-medium ${dueInFuture ? 'text-blue-600' : 'text-white'} dark:text-blue-500 hover:underline hover:cursor-pointer`}
                         onClick={() => openModal(elem)}
                       >
                         View
                       </span>
                       <Link
-                        className="ml-3 font-medium text-blue-600 dark:text-blue-500 hover:underline hover:cursor-pointer"
+                        className={`ml-3 font-medium ${dueInFuture ? 'text-blue-600' : 'text-white'} dark:text-blue-500 hover:underline hover:cursor-pointer`}
                         href={`/dashboard/update-invoice/${id}`}
                       >
                         Edit
