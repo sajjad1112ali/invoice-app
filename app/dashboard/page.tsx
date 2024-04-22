@@ -4,6 +4,7 @@ import { SingleInvoice } from "@/lib/customTypes";
 import { useEffect, useState } from "react";
 const Home = async () => {
   const [data, setData] = useState<SingleInvoice[]>([]);
+  const [loading, setLoading] = useState<Boolean>(true);
 
   useEffect(() => {
     fetch(`/api/invoice`, {
@@ -12,13 +13,14 @@ const Home = async () => {
       })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false)
         setData(data);
       });
   }, []);
   return (
     <div className="max-w-7xl w-full mx-auto">
       {/* <InvoiceList invoicesData={invoicesData} /> */}
-      <InvoiceList invoicesData={data} setData={setData}/>
+      { !loading && <InvoiceList invoicesData={data} setData={setData}/>}
     </div>
   );
 };

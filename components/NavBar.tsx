@@ -10,13 +10,13 @@ function NavBar() {
         aria-label="Global"
       >
         <div className="flex items-center justify-between">
-          <a
+          <Link
             className="flex-none text-xl font-semibold dark:text-white"
-            href="#"
+            href="/"
             aria-label="Brand"
           >
-            Brand
-          </a>
+            Paperless Billing
+          </Link>
           <div className="sm:hidden">
             <button
               type="button"
