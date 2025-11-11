@@ -1,5 +1,5 @@
 import React from "react";
-function Introduction() {
+function Hero() {
   return (
     <>
       <section className="bg-slate-900 pt-16 pb-24 md:pt-24 md:pb-32 text-white">
@@ -44,4 +44,4 @@ function Introduction() {
   );
 }
 
-export default Introduction;
+export default Hero;

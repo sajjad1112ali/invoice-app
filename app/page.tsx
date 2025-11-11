@@ -1,7 +1,7 @@
-import ContactUs from "@/components/Home/ContactUs";
-import Features from "@/components/Home/Features";
+import PlatformFeatures from "@/components/Home/PlatformFeatures";
+import KeyBenefits from "@/components/Home/KeyBenefits";
 import Hero from "@/components/Home/Hero";
-import Pricing from "@/components/Home/Pricing";
+import HowItWorks from "@/components/Home/HowItWorks";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,9 +9,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Features />
-      <Pricing />
-      <ContactUs />
+      <KeyBenefits />
+      <HowItWorks />
+      <PlatformFeatures />
     </>
   );
 }
