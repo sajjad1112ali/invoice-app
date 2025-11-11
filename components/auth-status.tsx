@@ -1,40 +1,52 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-
 import Link from "next/link";
 import SignOut from "./sign-out";
 
 export default async function AuthStatus() {
-   const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+
+  if (!user) {
+    return (
+      <Link
+        href="/login"
+        className="px-4 py-2 text-sm font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-700 transition duration-150 hidden sm:inline-block"
+      >
+        Log in
+      </Link>
+    );
+  }
+
+  const userInitial = user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase();
+
   return (
-    <>
-      {session && (
-        <>
+    <div className="relative group">
+      {/* Avatar */}
+      <button className="flex items-center justify-center w-10 h-10 bg-emerald-500 text-white font-bold text-lg rounded-full shadow-md ring-2 ring-emerald-500 hover:ring-slate-900 transition duration-150 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-300">
+        {user.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
+        ) : (
+          <span className="font-semibold">{userInitial}</span>
+        )}
+      </button>
+
+      {/* Dropdown */}
+      <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
         <Link
-          className="flex items-center gap-x-2 font-semibold text-gray-500 hover:text-blue-600 sm:border-l sm:border-gray-300 sm:my-6 sm:pl-6 dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500"
-          href={'dashboard'}
+          href="/dashboard"
+          className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           Dashboard
         </Link>
-        <SignOut />
-        </>
-      )}
-      <Link
-        className="flex items-center gap-x-2 font-semibold text-gray-500 hover:text-blue-600 sm:border-l sm:border-gray-300 sm:my-6 sm:pl-6 dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500"
-        href={session ? `/dashboard/profile` : `login`}
-      >
-        <svg
-          className="w-4 h-4"
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
-        </svg>
-        {session ? `Welcome ${session.user?.email}` : "Log in"}
-      </Link>
-    </>
+
+        {/* Logout */}
+        <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+        <div>
+          <SignOut />
+        </div>
+      </div>
+    </div>
   );
 }

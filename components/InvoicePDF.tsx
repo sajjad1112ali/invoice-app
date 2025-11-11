@@ -17,7 +17,7 @@ type privateProps = {
   isEditMode: boolean;
 };
 // Register the fonts with pdfmake
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts?.pdfMake?.vfs;
 
 const InvoicePDF = ({
   items,

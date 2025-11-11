@@ -12,9 +12,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const title = "Next.js Prisma Postgres Auth Starter";
+const title = "Paperless Billing | Streamlined Paperless Invoicing";
 const description =
-  "This is a Next.js starter kit that uses Next-Auth for simple email + password login and a Postgres database to persist the data.";
+  "Streamlined Paperless Invoicing for Modern Businesses - Simplify your billing process with our secure, eco-friendly solution.";
 
 export const metadata: Metadata = {
   title,
