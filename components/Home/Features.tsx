@@ -1,198 +1,35 @@
 import React from 'react'
 function Features() {
   return (
-    <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto text-center">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 items-center gap-2">
-        <a
-          className="group flex flex-col justify-center hover:bg-gray-50 rounded-xl p-4 md:p-7 dark:hover:bg-slate-800"
-          href="#"
-        >
-          <div className="flex justify-center items-center w-12 h-12 bg-blue-600 rounded-xl  m-auto">
-            <svg
-              className="w-6 h-6 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z" />
-              <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-            </svg>
-          </div>
-          <div className="mt-5">
-            <h3 className="group-hover:text-gray-600 text-lg font-semibold text-gray-800 dark:text-white dark:group-hover:text-gray-400">
-              Feature 1
-            </h3>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis
-              minima magni debitis cupiditate earum doloribus voluptas incidunt
-              suscipit voluptatibus, maiores natus fugit fugiat? Repellendus
-              iure maxime accusamus esse obcaecati reiciendis?
-            </p>
-            <span className="mt-2 inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 group-hover:underline font-medium">
-              Learn more
-              <svg
-                className="w-2.5 h-2.5"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <a
-          className="group flex flex-col justify-center hover:bg-gray-50 rounded-xl p-4 md:p-7 dark:hover:bg-slate-800"
-          href="#"
-        >
-          <div className="flex justify-center items-center w-12 h-12 bg-blue-600 rounded-xl  m-auto">
-            <svg
-              className="w-6 h-6 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M9.465 10H12a2 2 0 1 1 0 4H9.465c.34-.588.535-1.271.535-2 0-.729-.195-1.412-.535-2z" />
-              <path d="M6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm.535-10a3.975 3.975 0 0 1-.409-1H4a1 1 0 0 1 0-2h2.126c.091-.355.23-.69.41-1H4a2 2 0 1 0 0 4h2.535z" />
-              <path d="M14 4a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
-            </svg>
-          </div>
-          <div className="mt-5">
-            <h3 className="group-hover:text-gray-600 text-lg font-semibold text-gray-800 dark:text-white dark:group-hover:text-gray-400">
-              Feature 2
-            </h3>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-              dolorum consequuntur corporis vel animi ducimus nostrum quaerat
-              dicta earum praesentium, id saepe ea itaque aspernatur ullam sint.
-              Nesciunt, eligendi neque.
-            </p>
-            <span className="mt-2 inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 group-hover:underline font-medium">
-              Learn more
-              <svg
-                className="w-2.5 h-2.5"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <a
-          className="group flex flex-col justify-center hover:bg-gray-50 rounded-xl p-4 md:p-7 dark:hover:bg-slate-800"
-          href="#"
-        >
-          <div className="flex justify-center items-center w-12 h-12 bg-blue-600 rounded-xl  m-auto">
-            <svg
-              className="w-6 h-6 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
-              <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
-            </svg>
-          </div>
-          <div className="mt-5">
-            <h3 className="group-hover:text-gray-600 text-lg font-semibold text-gray-800 dark:text-white dark:group-hover:text-gray-400">
-              Feature 3
-            </h3>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi
-              eligendi tempore temporibus culpa exercitationem voluptates ipsa
-              deserunt, at ducimus non veniam deleniti quisquam laboriosam quam
-              nostrum consectetur repellat neque consequuntur?
-            </p>
-            <span className="mt-2 inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 group-hover:underline font-medium">
-              Learn more
-              <svg
-                className="w-2.5 h-2.5"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <a
-          className="group flex flex-col justify-center hover:bg-gray-50 rounded-xl p-4 md:p-7 dark:hover:bg-slate-800"
-          href="#"
-        >
-          <div className="flex justify-center items-center w-12 h-12 bg-blue-600 rounded-xl  m-auto">
-            <svg
-              className="w-6 h-6 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-              <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-            </svg>
-          </div>
-          <div className="mt-5">
-            <h3 className="group-hover:text-gray-600 text-lg font-semibold text-gray-800 dark:text-white dark:group-hover:text-gray-400">
-              Feature 4
-            </h3>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
-              omnis nihil. Necessitatibus, laboriosam at! Fugit recusandae amet
-              deleniti odio numquam tempore quisquam voluptate soluta accusamus,
-              omnis adipisci reprehenderit ad excepturi!
-            </p>
-            <span className="mt-2 inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 group-hover:underline font-medium">
-              Learn more
-              <svg
-                className="w-2.5 h-2.5"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </div>
-        </a>
-      </div>
-    </div>
+    <section id="benefits" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-extrabold text-slate-900 text-center mb-16">
+                Key Benefits of Going Paperless
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div className="bg-white p-8 rounded-xl shadow-xl border-t-4 border-emerald-500 hover:shadow-2xl transition duration-300">
+                    <svg className="w-10 h-10 text-emerald-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Fast Invoice Creation</h3>
+                    <p className="text-gray-600 text-sm">Create and send invoices within minutes using a clean and intuitive interface.</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-xl border-t-4 border-emerald-500 hover:shadow-2xl transition duration-300">
+                    <svg className="w-10 h-10 text-emerald-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Professional PDF Output</h3>
+                    <p className="text-gray-600 text-sm">Generate well-formatted PDF invoices suitable for clients, bookkeeping, and records.</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-xl border-t-4 border-emerald-500 hover:shadow-2xl transition duration-300">
+                    <svg className="w-10 h-10 text-emerald-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Centralized Database</h3>
+                    <p className="text-gray-600 text-sm">All invoices are securely stored, searchable, and accessible anytime you need them.</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-xl border-t-4 border-emerald-500 hover:shadow-2xl transition duration-300">
+                    <svg className="w-10 h-10 text-emerald-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Accessible Anywhere</h3>
+                    <p className="text-gray-600 text-sm">Work from any device, without software installation or manual backups.</p>
+                </div>
+            </div>
+        </div>
+    </section>
   );
 }
 
