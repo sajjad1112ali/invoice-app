@@ -20,7 +20,7 @@ export type SingleInvoice = {
   items: InvoiceItem[];
   shippingPrice: number;
   totalPrice: number;
-  clientInformation: string;
+  clientInformation: ClientInfo;
   createdAt: string;
   dueDate: string;
   userId: Function;
@@ -30,5 +30,4 @@ export type SingleInvoice = {
 export type invoiceSummary = {
   totalPrice: number;
   shippingPrice: number;
-  subTotal: number;
 };

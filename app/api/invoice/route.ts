@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-import { NextRequest, NextResponse, } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { NextApiRequest } from "next";
 
 const getUserId = async () => {
@@ -21,9 +21,9 @@ function getQSParamFromURL(
 
 export async function POST(req: Request) {
   const userId = await getUserId();
-  const { clientInformation, items, totalPrice, shippingPrice, dueDate } =
+  const { clientInformation, items, shippingPrice, dueDate } =
     await req.json();
-    const total = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+  const totalPrice = items.reduce((sum, item) => sum + item.qty * item.price, 0);
 
   try {
     const invoice = await prisma.invoice.create({
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         userId,
         clientInformation,
         items,
-        totalPrice: total + +shippingPrice,
+        totalPrice,
         shippingPrice,
         dueDate: new Date(dueDate).toISOString(),
       },
@@ -43,9 +43,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: NextApiRequest) {
-  const invoiceId = getQSParamFromURL('id', req.url)
+  const invoiceId = getQSParamFromURL("id", req.url);
   try {
-
     let data = null;
     if (invoiceId) {
       data = await prisma.invoice.findUnique({
@@ -64,13 +63,18 @@ export async function GET(req: NextApiRequest) {
     }
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: "Got error.......", invoiceId, URL: req.url }, { status: 400 });
+    return NextResponse.json(
+      { error: "Got error.......", invoiceId, URL: req.url },
+      { status: 400 }
+    );
   }
 }
 
 export async function PUT(req: Request) {
-  const { id, userId, clientInformation, items, totalPrice, shippingPrice } =
+  const { id, userId, clientInformation, items, shippingPrice } =
     await req.json();
+      const totalPrice = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+
   try {
     const user = await prisma.invoice.update({
       where: {

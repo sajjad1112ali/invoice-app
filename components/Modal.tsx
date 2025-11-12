@@ -11,27 +11,23 @@ import InvoicePDF from "./InvoicePDF";
 type privateProps = {
   isOpen: boolean;
   closeModal: Function;
-  invoiceDetails: SingleInvoice | undefined;
+  invoiceDetails: SingleInvoice;
 };
 
 const Modal = ({ isOpen, closeModal, invoiceDetails }: privateProps) => {
   if (!invoiceDetails) return null;
-  console.log(`invoiceDetailsinvoiceDetails`)
-  console.log(invoiceDetails)
   const invoiceItems: InvoiceItem[] = invoiceDetails?.items;
   const clientInformation = invoiceDetails?.clientInformation;
   const invoiceItemsData: InvoiceItem[] = invoiceItems
     ? invoiceItems
     : [];
   const clientInformationData: ClientInfo = clientInformation
-    ? JSON.parse(clientInformation)
-    : [];
+    
   const { totalPrice, shippingPrice, id } = invoiceDetails;
   const subTotal: number = totalPrice - shippingPrice;
   const invoiceSummaryDetails: invoiceSummary = {
     totalPrice,
     shippingPrice,
-    subTotal,
   };
   return (
     <div>

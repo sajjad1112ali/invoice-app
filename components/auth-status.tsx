@@ -6,12 +6,19 @@ import { useEffect, useState } from "react";
 
 export default function AuthStatus() {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/auth-session')
       .then(res => res.json())
-      .then(data => setUser(data?.user));
+      .then(data => {
+        setUser(data?.user);
+        setIsLoading(false);
+      });
   }, []);
+  if (isLoading) {
+    return null;
+  }
   if (!user) {
     return (
       <Link
@@ -27,7 +34,6 @@ export default function AuthStatus() {
 
   return (
     <div className="relative group">
-      {/* Avatar */}
       <button className="flex items-center justify-center w-10 h-10 bg-emerald-500 text-white font-bold text-lg rounded-full shadow-md ring-2 ring-emerald-500 hover:ring-slate-900 transition duration-150 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-300">
         {user.image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -37,7 +43,6 @@ export default function AuthStatus() {
         )}
       </button>
 
-      {/* Dropdown */}
       <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
         <Link
           href="/dashboard"
@@ -46,7 +51,6 @@ export default function AuthStatus() {
           Dashboard
         </Link>
 
-        {/* Logout */}
         <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
         <div>
           <SignOut />

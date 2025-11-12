@@ -130,7 +130,7 @@ const InvoiceList = ({ invoicesData, setData }: privateProps) => {
                     shippingPrice,
                     totalPrice,
                   } = elem;
-                  const clientData: ClientInfo = JSON.parse(clientInformation);
+                  const clientData: ClientInfo = clientInformation;
                   const dueInFuture = isFutureDate(dueDate);
                   const paidStatusClass = isPaid ? "green" : "yellow";
                   const tblRowClass = isPaid

@@ -69,10 +69,7 @@ const InvoicePDF = ({
     }
   };
   const getPDFData = (data) => {
-    console.log("<<<<<<<<<<data>>>>>>>>>>");
-    console.log(data);
-    // return
-    const {clientInformation, createdAt, dueDate, id, isPaid, items: billItems, shippingPrice, totalPrice, userId} = data;
+    const { clientInformation, createdAt, id, items: billItems } = data;
     const documentDefinition: any = {
       content: [
         {
@@ -123,7 +120,7 @@ const InvoicePDF = ({
                   border: [false, false, false, false],
                 },
                 {
-                  text: new Date().toDateString(),
+                  text: `Issue Date: ${formateDate(createdAt)}`,
                   style: "paragraphs",
                   border: [false, false, false, false],
                   alignment: "right",
@@ -182,7 +179,7 @@ const InvoicePDF = ({
       },
     };
     return documentDefinition;
-  }
+  };
 
   const generatePDF = (pdfData: any, id: number) => {
     pdfMake.createPdf(pdfData).open();
@@ -352,9 +349,8 @@ const InvoicePDF = ({
 
     if (isValid === false) return false;
     if (downloadTriggeredFromModal) {
-              const bbbb = getPDFData(invoiceDetails);
-
-      generatePDF(bbbb, downloadTriggeredFromModal);
+      const editPdfData = getPDFData(invoiceDetails);
+      generatePDF(editPdfData, downloadTriggeredFromModal);
       return;
     }
     const requestMethod = isEditMode ? "PUT" : "POST";
@@ -364,8 +360,7 @@ const InvoicePDF = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 1,
-        clientInformation: JSON.stringify(clientInfo),
+        clientInformation: clientInfo,
         totalPrice: totalPrice,
         shippingPrice: shippingPrice,
         dueDate: clientInfo.dueDate,
@@ -380,8 +375,8 @@ const InvoicePDF = ({
           ? "Invoice saved successfully"
           : "Invoice updated successfully";
         toast.success(statusMessage);
-        const dddddd = getPDFData(data);
-        generatePDF(dddddd, id);
+        const createdPDFData = getPDFData(data);
+        generatePDF(createdPDFData, id);
         if (isEditMode) {
           router.refresh();
           router.push("/dashboard");

@@ -16,7 +16,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   let shippingAmount: number = 0;
   if (isEditMode && invoiceData) {
     customerInforForEdit = JSON.parse(invoiceData.clientInformation);
-    itemsforForEdit = JSON.parse(invoiceData.items);
+    itemsforForEdit = invoiceData.items;
     shippingAmount = invoiceData.shippingPrice;
   }
   const showShippingTb = shippingAmount > 0;
