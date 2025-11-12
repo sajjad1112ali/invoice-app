@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 function Hero() {
   return (
@@ -12,20 +13,19 @@ function Hero() {
             **organized billing records** — all in one secure platform.
           </p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <a
-              href="#"
+            <Link
+              href="/login"
               className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl shadow-xl text-slate-900 bg-emerald-500 hover:bg-emerald-400 transition duration-300 transform hover:scale-105"
             >
-              Get Started
-            </a>
-            <a
+              Login
+            </Link>
+            {/* <a
               href="#"
               className="inline-flex items-center justify-center px-8 py-4 border-2 border-emerald-500 text-base font-bold rounded-xl text-emerald-500 hover:bg-emerald-500 hover:text-white transition duration-300"
             >
-              Login
-            </a>
+              Get Started
+            </a> */}
           </div>
-          {/* <div className="mt-16 h-64 w-full bg-slate-800 rounded-xl flex items-center justify-center text-gray-400 italic"></div> */}
         </div>
       </section>
       <section id="value-prop" className="py-20 bg-white shadow-inner">

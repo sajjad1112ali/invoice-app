@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function SecurityAndManaging() {
@@ -39,12 +40,12 @@ function SecurityAndManaging() {
             Experience faster, cleaner, and more organized billing — with zero
             paperwork.
           </p>
-          <a
-            href="#"
+          <Link
+            href="/register"
             className="inline-flex items-center justify-center px-10 py-4 border border-transparent text-lg font-bold rounded-xl shadow-xl text-white bg-slate-900 hover:bg-slate-700 transition duration-300 transform hover:scale-105"
           >
             → Create Your Account
-          </a>
+          </Link>
         </div>
       </section>
 
