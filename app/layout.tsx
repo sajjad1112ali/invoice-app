@@ -3,9 +3,8 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import AuthStatus from "@/components/auth-status";
-import { Suspense } from "react";
 import NavBar from "@/components/NavBar";
+import { headers } from "next/headers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,6 +32,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+    const headersList = headers();
+  const pathname = headersList.get("x-invoke-path") || "/"; // fallback to "/"
+  console.log(headersList.get("x-invoke-path"))
   return (
     <html lang="en">
       <head>
@@ -40,7 +42,7 @@ export default async function RootLayout({
       </head>
       <body className={inter.variable}>
         <Toaster />
-        <NavBar />
+        <NavBar pathname={pathname} />
        
         {children}
       </body>

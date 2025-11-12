@@ -2,11 +2,16 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 import SignOut from "./sign-out";
+import { useEffect, useState } from "react";
 
-export default async function AuthStatus() {
-  const session = await getServerSession(authOptions);
-  const user = session?.user;
+export default function AuthStatus() {
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    fetch('/api/auth-session')
+      .then(res => res.json())
+      .then(data => setUser(data?.user));
+  }, []);
   if (!user) {
     return (
       <Link
