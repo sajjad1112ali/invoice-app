@@ -304,7 +304,7 @@ const InvoicePDF = ({
   return (
     <button
       onClick={saveInvoice}
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-3 py-2 mx-3 rounded"
+      className="inline-flex items-center justify-center px-3 py-3 border border-transparent text-base font-bold rounded-md shadow-xl text-white bg-blue-500 hover:bg-blue-400 transition duration-300 transform hover:scale-105"
     >
       {isEditMode ? "Update" : <DocumentDownloadIcon className="h-5 w-5" />}
     </button>

@@ -15,11 +15,6 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   let itemsforForEdit = null;
   let shippingAmount: number = 0;
   if (isEditMode && invoiceData) {
-
-    console.log(`<<<<<<<<<<<<<<< isEditMode >>>>>>>>>>>>>>>`)
-    console.log(isEditMode)
-    console.log(`<<<<<<<<<<<<<<< invoiceData >>>>>>>>>>>>>>>`)
-    console.log(invoiceData)
     customerInforForEdit = JSON.parse(invoiceData.clientInformation);
     itemsforForEdit = JSON.parse(invoiceData.items);
     shippingAmount = invoiceData.shippingPrice;
@@ -80,14 +75,15 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
   };
   return (
     <>
-      <div className="px-2">
+      <div className="px-2 mt-8">
         <div className="max-w-md mx-auto">
-          <h1 className="text-2xl font-bold mb-4">Create Invoice</h1>
+          <h2 className="text-emerald-500 text-5xl font-medium leading-tight mb-8">
+            Invoices
+          </h2>
           <ClientInformation
             clientInfo={clientInfo}
             handleClientInfoChange={handleClientInfoChange}
           />
-
           <div className="mb-4">
             <label>
               <input
@@ -99,7 +95,6 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
               Set Shipping
             </label>
           </div>
-
           {showShipping && (
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -151,7 +146,7 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
               <div className="flex w-full md:width-20 justify-center">
                 <button
                   onClick={() => removeItem(index)}
-                  className="md:ml-2 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none mt-2 md:mt-auto"
+                  className="inline-flex items-center justify-center ml-2 px-3 py-3 border border-transparent text-base font-bold rounded-md shadow-xl text-white bg-red-500 hover:bg-red-400 transition duration-300 transform hover:scale-105"
                 >
                   <MinusCircleIcon className="h-5 w-5" />
                 </button>
@@ -159,10 +154,10 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
               <div className="border my-2 border-gray-300 block md:hidden"></div>
             </div>
           ))}
-          <div className="flex mb-4">
+          <div className="flex gap-4 mb-4">
             <button
               onClick={addItem}
-              className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+              className="inline-flex items-center justify-center px-3 py-3 border border-transparent text-base font-bold rounded-md shadow-xl text-white bg-emerald-500 hover:bg-emerald-400 transition duration-300 transform hover:scale-105"
             >
               <PlusCircleIcon className="h-5 w-5" />
             </button>
