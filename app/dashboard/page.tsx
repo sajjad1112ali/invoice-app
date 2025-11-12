@@ -2,7 +2,7 @@
 import InvoiceList from "@/components/InvoiceList";
 import { SingleInvoice } from "@/lib/customTypes";
 import { useEffect, useState } from "react";
-const Home = async () => {
+const Home = () => {
   const [data, setData] = useState<SingleInvoice[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
 
