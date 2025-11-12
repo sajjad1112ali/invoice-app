@@ -18,7 +18,7 @@ model User {
 model Invoice {
   id                 Int      @id @default(autoincrement())
   clientInformation  String   @db.Text
-  items              String   @db.Text
+  items              Json
   createdAt          DateTime @default(now())
   dueDate          DateTime @default(now())
   userId             Int

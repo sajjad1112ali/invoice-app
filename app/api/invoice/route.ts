@@ -23,18 +23,20 @@ export async function POST(req: Request) {
   const userId = await getUserId();
   const { clientInformation, items, totalPrice, shippingPrice, dueDate } =
     await req.json();
+    const total = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+
   try {
-    const user = await prisma.invoice.create({
+    const invoice = await prisma.invoice.create({
       data: {
         userId,
         clientInformation,
         items,
-        totalPrice,
+        totalPrice: total + +shippingPrice,
         shippingPrice,
         dueDate: new Date(dueDate).toISOString(),
       },
     });
-    return NextResponse.json(user);
+    return NextResponse.json(invoice);
   } catch (error) {
     return NextResponse.json({ error: "Got error" }, { status: 400 });
   }

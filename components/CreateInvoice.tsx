@@ -20,12 +20,12 @@ function CreateInvoice({ invoiceData, isEditMode, id }: privateProps) {
     shippingAmount = invoiceData.shippingPrice;
   }
   const showShippingTb = shippingAmount > 0;
-  const defaulfItem: InvoiceItem[] = [{ name: "", price: 0, qty: 0 }];
+  const defaulfItem: InvoiceItem[] = [{ name: "qqqqq", price: 1, qty: 400 }];
   const defaultClientInfo: ClientInfo = {
-    name: customerInforForEdit ? customerInforForEdit.name : "",
-    email: customerInforForEdit ? customerInforForEdit.email : "",
-    phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber : "",
-    dueDate: customerInforForEdit ? customerInforForEdit.dueDate : "",
+    name: customerInforForEdit ? customerInforForEdit.name : "cccc",
+    email: customerInforForEdit ? customerInforForEdit.email : "aasasas",
+    phoneNumber: customerInforForEdit ? customerInforForEdit.phoneNumber : "12121",
+    dueDate: customerInforForEdit ? customerInforForEdit.dueDate : new Date(),
   };
   const defaultInvoiceItems = isEditMode ? itemsforForEdit : defaulfItem;
   const [items, setItems] = useState<InvoiceItem[]>(defaultInvoiceItems);

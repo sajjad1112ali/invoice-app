@@ -16,10 +16,12 @@ type privateProps = {
 
 const Modal = ({ isOpen, closeModal, invoiceDetails }: privateProps) => {
   if (!invoiceDetails) return null;
-  const invoiceItems = invoiceDetails?.items;
+  console.log(`invoiceDetailsinvoiceDetails`)
+  console.log(invoiceDetails)
+  const invoiceItems: InvoiceItem[] = invoiceDetails?.items;
   const clientInformation = invoiceDetails?.clientInformation;
   const invoiceItemsData: InvoiceItem[] = invoiceItems
-    ? JSON.parse(invoiceItems)
+    ? invoiceItems
     : [];
   const clientInformationData: ClientInfo = clientInformation
     ? JSON.parse(clientInformation)
@@ -117,6 +119,7 @@ const Modal = ({ isOpen, closeModal, invoiceDetails }: privateProps) => {
                       downloadTriggeredFromModal={id}
                       isEditMode={false}
                       shipping={shippingPrice}
+                      invoiceDetails={invoiceDetails}
                     />
                   </div>
                 </div>

@@ -17,7 +17,7 @@ export type ClientInfo = {
 
 export type SingleInvoice = {
   id: number;
-  items: string;
+  items: InvoiceItem[];
   shippingPrice: number;
   totalPrice: number;
   clientInformation: string;
