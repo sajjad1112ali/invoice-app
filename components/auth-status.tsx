@@ -1,23 +1,11 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 import SignOut from "./sign-out";
-import { useEffect, useState } from "react";
 
-export default function AuthStatus() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('/api/auth-session')
-      .then(res => res.json())
-      .then(data => {
-        setUser(data?.user);
-        setIsLoading(false);
-      });
-  }, []);
-  if (isLoading) {
-    return null;
+export default function AuthStatus({loading, user}) {
+  
+  if (loading) {
+    return <div className="w-10 h-10"></div>;
   }
   if (!user) {
     return (

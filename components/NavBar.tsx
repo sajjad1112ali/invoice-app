@@ -4,8 +4,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import AuthStatus from "./auth-status";
 import { usePathname } from "next/navigation";
+import { useUserContext } from "context/UserContext";
 
 function  NavBar() {
+  const { user, loading } = useUserContext();
+
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
@@ -38,7 +41,7 @@ function  NavBar() {
           </a>
         </nav>)}
         <Suspense fallback="Loading...">
-          <AuthStatus />
+          <AuthStatus user={user} loading={loading}/>
         </Suspense>
       </div>
     </header>

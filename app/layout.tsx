@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import NavBar from "@/components/NavBar";
 import { headers } from "next/headers";
+import { UserProvider } from "context/UserContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,13 +19,6 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-  metadataBase: new URL("https://nextjs-postgres-auth.vercel.app"),
-  themeColor: "#FFF",
 };
 
 export default async function RootLayout({
@@ -32,19 +26,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-    const headersList = headers();
-  const pathname = headersList.get("x-invoke-path") || "/"; // fallback to "/"
-  console.log(headersList.get("x-invoke-path"))
   return (
     <html lang="en">
       <head>
         <script src="https://preline.co/assets/vendor/preline/preline.js"></script>
       </head>
       <body className={inter.variable}>
-        <Toaster />
-        <NavBar pathname={pathname} />
-       
-        {children}
+        <UserProvider>
+          <Toaster />
+          <NavBar />
+
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

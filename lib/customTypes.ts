@@ -31,3 +31,9 @@ export type invoiceSummary = {
   totalPrice: number;
   shippingPrice: number;
 };
+
+export type UserContextType = {
+  user: any;
+  loading: boolean;
+  refreshUser: () => Promise<void>
+}
