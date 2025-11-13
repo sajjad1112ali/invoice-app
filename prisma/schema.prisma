@@ -3,27 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
-  invoices  Invoice[]
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String
+  name     String?
+  plan     String    @default("FREE")
+  invoices Invoice[]
 }
 
 model Invoice {
-  id                 Int      @id @default(autoincrement())
-  clientInformation  Json
-  items              Json
-  createdAt          DateTime @default(now())
-  dueDate          DateTime @default(now())
-  userId             Int
-  user               User     @relation(fields: [userId], references: [id])
-  totalPrice         Int
-  shippingPrice      Int
-  isPaid             Boolean  @default(false)
+  id                Int      @id @default(autoincrement())
+  clientInformation Json
+  items             Json
+  createdAt         DateTime @default(now())
+  dueDate           DateTime @default(now())
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id])
+  totalPrice        Int
+  shippingPrice     Int
+  isPaid            Boolean  @default(false)
 }

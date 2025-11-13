@@ -11,7 +11,6 @@ function  NavBar() {
 
   const pathname = usePathname();
   const isHomePage = pathname === '/';
-
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -41,7 +40,7 @@ function  NavBar() {
           </a>
         </nav>)}
         <Suspense fallback="Loading...">
-          <AuthStatus user={user} loading={loading}/>
+          <AuthStatus user={user} loading={loading} pathname={pathname} />
         </Suspense>
       </div>
     </header>

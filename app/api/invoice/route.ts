@@ -1,12 +1,18 @@
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { NextApiRequest } from "next";
 
+const PLAN_LIMITS = {
+  FREE: 5,
+  PRO: 50,
+  ENTERPRISE: 500,
+};
+type PLAN_LIMITS = keyof typeof PLAN_LIMITS;
 const getUserId = async () => {
   const session = await getServerSession(authOptions);
-  return session.user?.id;
+  return session.user;
 };
 
 function getQSParamFromURL(
@@ -20,10 +26,27 @@ function getQSParamFromURL(
 }
 
 export async function POST(req: Request) {
-  const userId = await getUserId();
-  const { clientInformation, items, shippingPrice, dueDate } =
-    await req.json();
-  const totalPrice = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+  const { id: userId, plan } = await getUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const limit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.FREE;
+  const invoiceCount = await prisma.invoice.count({
+    where: { userId },
+  });
+    if (invoiceCount >= limit) {
+    return NextResponse.json(
+      {
+        error: `Invoice limit reached for your ${plan} plan.`,
+      },
+      { status: 403 }
+    );
+  }
+  const { clientInformation, items, shippingPrice, dueDate } = await req.json();
+  const totalPrice = items.reduce(
+    (sum, item) => sum + item.qty * item.price,
+    0
+  );
 
   try {
     const invoice = await prisma.invoice.create({
@@ -53,27 +76,39 @@ export async function GET(req: NextApiRequest) {
         },
       });
     } else {
-      const userId: number = await getUserId();
-
+      const { id } = await getUserId();
       data = await prisma.invoice.findMany({
         where: {
-          userId,
+          userId: id,
         },
       });
     }
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
-      { error: "Got error.......", invoiceId, URL: req.url },
+      { error: "Got error", invoiceId, URL: req.url },
       { status: 400 }
     );
   }
 }
 
 export async function PUT(req: Request) {
+    const { plan } = await getUserId();
+
+   if (plan === "FREE") {
+    return NextResponse.json(
+      {
+        error: `You are on FREE plan. you can't make updates.`,
+      },
+      { status: 403 }
+    );
+  }
   const { id, userId, clientInformation, items, shippingPrice } =
     await req.json();
-      const totalPrice = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+  const totalPrice = items.reduce(
+    (sum, item) => sum + item.qty * item.price,
+    0
+  );
 
   try {
     const user = await prisma.invoice.update({

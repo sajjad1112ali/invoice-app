@@ -384,7 +384,7 @@ const InvoicePDF = ({
           resetForm();
         }
       } else {
-        const { error } = await res.json();
+        const { error } = data;
         toast.error(error);
       }
     });

@@ -2,12 +2,11 @@ import Link from "next/link";
 import SignOut from "./sign-out";
 
 
-export default function AuthStatus({loading, user}) {
-  
-  if (loading) {
+export default function AuthStatus({loading, user, pathname}) {
+  if (loading || ["/register", "/login"].includes(pathname)) {
     return <div className="w-10 h-10"></div>;
   }
-  if (!user) {
+  if (!user ) {
     return (
       <Link
         href="/login"
